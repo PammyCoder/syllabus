@@ -19,9 +19,6 @@ const transporter = nodemailer.createTransport({
 });
 
 /* ===== STATIC FILES ===== */
-app.use(express.static(__dirname));
-
-/* ===== FORM SUBMIT ROUTE ===== */
 app.post("/send", async (req, res) => {
   const { name, email, message } = req.body;
 
@@ -36,7 +33,7 @@ app.post("/send", async (req, res) => {
     res.json({ success: true });
   } catch (error) {
     console.log(error);
-    res.status(500).send("Error sending email ❌");
+    res.status(500).json({ success: false });
   }
 });
 
