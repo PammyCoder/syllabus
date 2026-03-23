@@ -8,11 +8,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// static serve (IMPORTANT)
 app.use(express.static(__dirname));
 
-// email config
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -21,27 +18,28 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// form route
 app.post("/send", async (req, res) => {
-  const { name, email, message } = req.body;
-
   try {
     await transporter.sendMail({
-      from: email,
+      from: req.body.email,
       to: "contactsocialmanish@gmail.com",
-      subject: "New Message",
-      text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+      subject: "Form Data",
+      text: JSON.stringify(req.body, null, 2),
     });
 
     res.json({ success: true });
   } catch (err) {
-    console.log(err);
     res.json({ success: false });
   }
 });
 
-// server start
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
 app.listen(process.env.PORT || 3000);
+
+
 /* ===== SYLLABUS LINKS ===== */
 const SYLLABUS_LINKS = {
   bihar: {
