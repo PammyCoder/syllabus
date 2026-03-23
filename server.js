@@ -1,5 +1,6 @@
 const express = require("express");
 const nodemailer = require("nodemailer");
+const path = require("path");
 const cors = require("cors");
 
 const app = express();
@@ -15,6 +16,18 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+/* ===== STATIC FILES ===== */
+app.use(express.static(path.join(__dirname)));
+
+/* ===== HOME ROUTE ===== */
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "first.html"));
+});
+
+/* ===== SERVER START ===== */
+app.listen(process.env.PORT || 3000, () => {
+  console.log("Server running...");
+});
 /* ===== SYLLABUS LINKS ===== */
 const SYLLABUS_LINKS = {
   bihar: {
