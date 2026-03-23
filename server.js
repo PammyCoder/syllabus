@@ -9,7 +9,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-/* ===== EMAIL CONFIG ===== */
+// static serve (IMPORTANT)
+app.use(express.static(__dirname));
+
+// email config
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -18,15 +21,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-/* ===== STATIC FILES ===== */
-app.use(express.static(path.join(__dirname)));
-
-/* ===== HOME FIX (VERY IMPORTANT) ===== */
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
-
-/* ===== FORM ROUTE ===== */
+// form route
 app.post("/send", async (req, res) => {
   const { name, email, message } = req.body;
 
@@ -39,16 +34,14 @@ app.post("/send", async (req, res) => {
     });
 
     res.json({ success: true });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false });
+  } catch (err) {
+    console.log(err);
+    res.json({ success: false });
   }
 });
 
-/* ===== SERVER START ===== */
-app.listen(process.env.PORT || 3000, () => {
-  console.log("Server running...");
-});
+// server start
+app.listen(process.env.PORT || 3000);
 /* ===== SYLLABUS LINKS ===== */
 const SYLLABUS_LINKS = {
   bihar: {
