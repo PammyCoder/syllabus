@@ -4,8 +4,10 @@ const path = require("path");
 const cors = require("cors");
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 /* ===== EMAIL CONFIG ===== */
 const transporter = nodemailer.createTransport({
@@ -17,11 +19,25 @@ const transporter = nodemailer.createTransport({
 });
 
 /* ===== STATIC FILES ===== */
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(__dirname));
 
-/* ===== HOME ROUTE ===== */
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+/* ===== FORM SUBMIT ROUTE ===== */
+app.post("/send", async (req, res) => {
+  const { name, email, message } = req.body;
+
+  try {
+    await transporter.sendMail({
+      from: email,
+      to: "contactsocialmanish@gmail.com",
+      subject: "New Message",
+      text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+    });
+
+    res.send("Email sent successfully ✅");
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error sending email ❌");
+  }
 });
 
 /* ===== SERVER START ===== */
