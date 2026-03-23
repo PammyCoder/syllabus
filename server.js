@@ -1,47 +1,38 @@
 const express = require("express");
 const nodemailer = require("nodemailer");
 const path = require("path");
-const cors = require("cors");
 
 const app = express();
 
-app.use(cors());
+// middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// static files serve
 app.use(express.static(__dirname));
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "contactsocialmanish@gmail.com",
-    pass: "scvuxluctrnwdfsu",
-  },
+// test route (IMPORTANT DEBUG)
+app.get("/test", (req, res) => {
+  res.send("SERVER WORKING ✅");
 });
 
-
+// email route
 app.post("/send", async (req, res) => {
-  try {
-    const { name, email, phone } = req.body;
+  console.log("DATA RECEIVED:", req.body); // DEBUG
 
-    await transporter.sendMail({
-      from: "contactsocialmanish@gmail.com",
-      to: "contactsocialmanish@gmail.com",
-      subject: "New Form Submission",
-      text: `
-        Name: ${name}
-        Email: ${email}
-        Phone: ${phone}
-      `,
-    });
-
-    res.json({ success: true });
-
-  } catch (error) {
-    console.log(error);
-    res.json({ success: false });
-  }
+  res.json({ success: true });
 });
 
+// fallback (VERY IMPORTANT)
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
+// port fix
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log("Server running on port " + PORT);
+});
 
 /* ===== SYLLABUS LINKS ===== */
 const SYLLABUS_LINKS = {
