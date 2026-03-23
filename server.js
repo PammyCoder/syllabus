@@ -19,6 +19,14 @@ const transporter = nodemailer.createTransport({
 });
 
 /* ===== STATIC FILES ===== */
+app.use(express.static(path.join(__dirname)));
+
+/* ===== HOME FIX (VERY IMPORTANT) ===== */
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
+/* ===== FORM ROUTE ===== */
 app.post("/send", async (req, res) => {
   const { name, email, message } = req.body;
 
