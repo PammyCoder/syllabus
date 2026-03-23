@@ -18,26 +18,29 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+
 app.post("/send", async (req, res) => {
   try {
+    const { name, email, phone } = req.body;
+
     await transporter.sendMail({
-      from: req.body.email,
+      from: "contactsocialmanish@gmail.com",
       to: "contactsocialmanish@gmail.com",
-      subject: "Form Data",
-      text: JSON.stringify(req.body, null, 2),
+      subject: "New Form Submission",
+      text: `
+        Name: ${name}
+        Email: ${email}
+        Phone: ${phone}
+      `,
     });
 
     res.json({ success: true });
-  } catch (err) {
+
+  } catch (error) {
+    console.log(error);
     res.json({ success: false });
   }
 });
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
-
-app.listen(process.env.PORT || 3000);
 
 
 /* ===== SYLLABUS LINKS ===== */
@@ -18039,5 +18042,5 @@ app.get("/thankyou", (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log("✅ Server running on http://localhost:3000");
+  console.log("Server running on port 3000");
 });
