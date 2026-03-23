@@ -232,11 +232,11 @@ document.getElementById("syllabusForm").addEventListener("submit", async functio
 
   const result = await response.json();
 
-  if (result.redirectUrl) {
-    window.location.href = result.redirectUrl;
-  } else {
-    alert("Something went wrong");
-  }
+if (result.success) {
+  alert("Email sent successfully ✅");
+} else {
+  alert("Error sending email ❌");
+}
 });
 </script>
 
