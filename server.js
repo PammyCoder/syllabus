@@ -24,7 +24,7 @@ app.post("/send", async (req, res) => {
 });
 
 // fallback (VERY IMPORTANT)
-app.get("*", (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
