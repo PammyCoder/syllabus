@@ -33,7 +33,7 @@ app.post("/send", async (req, res) => {
       text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
     });
 
-    res.send("Email sent successfully ✅");
+    res.json({ success: true });
   } catch (error) {
     console.log(error);
     res.status(500).send("Error sending email ❌");
