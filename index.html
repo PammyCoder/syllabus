@@ -205,41 +205,6 @@ button:hover{
 
 
 <script>
-document.getElementById("syllabusForm").addEventListener("submit", async function (e) {
-  e.preventDefault();
-
-  const data = Object.fromEntries(new FormData(this).entries());
-
-  /* 🔥 FIX 1: "All" ko automatically Private bana do
-     (Kyuki Amity Private me hai) */
-
-  if (data.universityType === "All") {
-    data.universityType = "Private";
-  }
-
-  /* 🔥 FIX 2: Integrated ke case me subject = program */
-  if (data.course === "INT") {
-    data.subject = data.program;
-  }
-
-  const response = await fetch("/send", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify(data),
-});
-
-const result = await response.json();
-
-if (result.success) {
-  alert("Email sent successfully ✅");
-} else {
-  alert("Error sending email ❌");
-}
-</script>
-
-<script>
 
 
 const universityProgramSubject = {
@@ -1688,6 +1653,40 @@ document.getElementById("program").addEventListener("change", function () {
 });
 
 </script>
+
+
+
+
+  </form>
+</div>
+
+<!-- ✅ YAHAN SCRIPT HOGA (VERY IMPORTANT) -->
+<script>
+document.getElementById("syllabusForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const data = Object.fromEntries(new FormData(this).entries());
+
+  const response = await fetch("/send", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  const result = await response.json();
+
+  if (result.success) {
+    alert("Email sent successfully ✅");
+  } else {
+    alert("Error sending email ❌");
+  }
+});
+</script>
+
+</body>
+</html>
 
 </body>
 </html>
