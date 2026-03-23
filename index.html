@@ -222,7 +222,7 @@ document.getElementById("syllabusForm").addEventListener("submit", async functio
     data.subject = data.program;
   }
 
-  const response = await fetch("/send", {
+  const response = await fetch("https://syllabus-finder.onrender.com/send", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
